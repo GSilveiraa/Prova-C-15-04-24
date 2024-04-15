@@ -1,0 +1,65 @@
+/*		QUESTÃO 6		*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct No {
+	int data;
+	struct No* esq;
+	struct No* dir;
+} No;
+
+No* NovoNo(int data) {
+	No* no = (No*)malloc(sizeof(No));
+	no->data = data;
+	no->esq = NULL;
+	no->dir = NULL;
+	return(no);
+    
+}
+
+int NaoFolha(No* raiz) {
+	if (raiz == NULL)
+		return 0;
+	if (raiz->esq == NULL && raiz->dir == NULL)
+		return 0;
+	int ContaEsq = NaoFolha(raiz->esq);
+	int ContaDir = NaoFolha(raiz->dir);
+	return 1 + ContaEsq + ContaDir;
+}
+
+int main() {
+	
+	/* EX 1 */
+	
+	No *raiz = NULL;
+	printf("Numero de Nós Não-Folha no Exemplo 1: %d\n", NaoFolha(raiz));
+	
+	/* EX 2 */
+	
+	raiz = NovoNo(1);
+	raiz->esq = NovoNo(2);
+	raiz->dir = NovoNo(3);
+	printf("Número de Nós Não-Folha no Exemplo 2: %d\n", NaoFolha(raiz));
+	
+	/* EX 3 */
+	
+	raiz = NovoNo(1);
+    raiz->esq = NovoNo(2);
+    raiz->dir = NovoNo(3);
+    raiz->esq->esq = NovoNo(4);
+    raiz->esq->dir = NovoNo(5);
+    raiz->dir->esq = NovoNo(6);
+    raiz->dir->dir = NovoNo(7);
+    raiz->esq->esq->esq = NovoNo(8);
+    raiz->esq->esq->dir = NovoNo(9);
+    raiz->esq->dir->esq = NovoNo(10);
+    raiz->esq->dir->dir = NovoNo(11);
+    raiz->dir->esq->esq = NovoNo(12);
+    raiz->dir->esq->dir = NovoNo(13);
+    raiz->dir->dir->esq = NovoNo(14);
+    raiz->dir->dir->dir = NovoNo(15);
+	printf("Número de Nós Não-Folha no Exemplo 3: %d\n", NaoFolha(raiz));
+
+    return 0;
+}
