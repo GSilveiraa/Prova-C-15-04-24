@@ -1,0 +1,66 @@
+/*		QUESTÃO 5		*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Fila {
+		int data;
+		int prioridade;
+		struct Fila* prox;
+} Fila;
+
+Fila* NovaFila(int data, int prioridade) {
+	Fila* temp = (Fila*)malloc(sizeof(Fila));
+	temp->data = data;
+	temp->prioridade = prioridade;
+	temp->prox =NULL;
+	
+	return temp;
+}
+
+int Confere(Fila** head) {
+	return (*head)->data;
+}
+
+void Apaga(Fila** head) {
+	Fila* temp =*head;
+	(*head) = (*head)->prox;
+	free(temp);
+}
+
+void Organiza(Fila** head, int d, int p) {
+	Fila* Comeco = (*head);
+	Fila* temp = NovaFila(p, p);
+	
+	if ((*head)->prioridade > p) {
+		temp->prox = *head;
+		(*head) = temp;
+	} else {
+		while (Comeco->prox != NULL && Comeco->prox->prioridade <p) {
+			Comeco = Comeco->prox;
+		}
+		temp->prox = Comeco->prox;
+		Comeco->prox = temp;
+	}			
+}
+
+int EstaVazio(Fila** head) {
+	return (*head) == NULL;
+}
+
+int main() {
+	Fila* pq = NovaFila(10, 1);
+	Organiza(&pq, 5, 11);
+	Organiza(&pq, 6, 12);
+	Organiza(&pq, 7, 13);
+	Organiza(&pq, 8, 14);
+	Organiza(&pq, 9, 15);
+
+
+	while (!EstaVazio(&pq)) {
+		printf("%d ", Confere(&pq));
+		Apaga(&pq);
+	}
+	
+	return 0;
+}
